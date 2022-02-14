@@ -1,59 +1,28 @@
+orbs:
+  npm-publisher: uraway/npm-publisher@0.2.0
 version: 2.1
-
-defaults: &defaults
-  working_directory: ~/repo
-  docker:
-    - image: circleci/node:14.17.3
-
-jobs:
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            - v1-dependencies-
-
-      - run: npm install
-      - run:
-          name: Run tests
-          command: npm test
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - persist_to_workspace:
-          root: ~/repo
-          paths: .
-  deploy:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/repo
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
-      - run:
-          name: Publish package
-          command: npm publish
-
 workflows:
-  version: 2
-  test-deploy:
+  build_publish:
     jobs:
-      - test:
+      - npm-publisher/publish-from-package-version:
           filters:
-            tags:
-              only: /^v.*/
-      - deploy:
-          requires:
-            - test
-          filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: master
+          fingerprints: <fingerprints>
+          post-publish-steps:
+            - save_cache:
+                key: 'v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json" }}'
+                paths:
+                  - node_modules
+          pre-publish-steps:
+            - restore_cache:
+                keys:
+                  - >-
+                    v1-node-cache-{{ .Branch }}-{{ checksum "package-lock.json"
+                    }}
+                  - 'v1-node-cache-{{ .Branch }}'
+                  - v1-node-cache-
+            - run: npm install
+            - run: npm build
+          publish-token-variable: NPM_TOKEN
+          push-git-tag: true
