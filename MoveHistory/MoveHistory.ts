@@ -14,7 +14,7 @@ class MoveHistory {
   }
 
   public addMove(move: IMove) {
-    this.moves.push(move);
+    this.moves = [...this.moves, move];
     this.currentMoveIdx += 1;
   }
 
