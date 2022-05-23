@@ -1,4 +1,4 @@
-import Position from './. ./Position/Position';
+import Position from '../Position/Position';
 import { Diagonal, GameOutcome, Side } from '../customTypes';
 import Piece from '../Pieces/Piece';
 import King from '../Pieces/King';
@@ -202,7 +202,7 @@ class Board {
   }
 
   public loadGame(moves :any) {
-    moves.forEach((move) => {
+    moves.forEach((move :any) => {
       let moveObj : IMove;
       if (move.moves) {
         moveObj = new ChainMove(this, move.moves);
