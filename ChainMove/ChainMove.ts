@@ -34,6 +34,13 @@ class ChainMove implements IMove {
   toBoardNotation(): string {
     return `${this.from.toBoardNotation()}x${this.to.toBoardNotation()}`;
   }
+  toJSON(): string {
+    return JSON.stringify({
+      from: this.from,
+      to: this.to,
+      moves: this.moves.map(m => m.toJSON()),
+    });
+  }
 }
 
 export default ChainMove;

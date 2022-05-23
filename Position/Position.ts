@@ -20,6 +20,10 @@ class Position {
 
     return 1 + rowStep * rowNumber + horizontalOffset;
   }
+
+  public toJSON() : string {
+    return JSON.stringify({ x: this.x, y: this.y });
+  }
 }
 
 export default Position;

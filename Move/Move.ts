@@ -72,6 +72,13 @@ class Move implements IMove {
     const delimiter = this.capturedPiecePosition ? 'x' : '-';
     return `${this.from.toBoardNotation()}${delimiter}${this.to.toBoardNotation()}`;
   }
+  public toJSON(): string {
+    return JSON.stringify({
+      from: this.from,
+      to: this.to,
+      capturedPiecePosition: this.capturedPiecePosition ? this.capturedPiecePosition.toJSON() : null
+    });
+  }
 }
 
 export default Move;

@@ -6,6 +6,7 @@ interface IMove {
     execute: () => any,
     revert: () => any,
     toBoardNotation: () => string,
+    toJSON: () => string,
 }
 
 export default IMove;
