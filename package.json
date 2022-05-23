@@ -1,10 +1,12 @@
 {
   "name": "checkersrules",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A reusable package for validating games of russian draughts.",
   "main": "build/index.js",
   "types": "build/types/index.d.ts",
-  "files": ["/build"],
+  "files": [
+    "/build"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc"
