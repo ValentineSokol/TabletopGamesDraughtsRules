@@ -50,6 +50,9 @@ class MoveHistory {
   public toBoardNotation() {
     return this.moves.map((move) => move.toBoardNotation());
   }
+  public getMoves(): IMove[] {
+    return this.moves;
+}
 }
 
 export default MoveHistory;
