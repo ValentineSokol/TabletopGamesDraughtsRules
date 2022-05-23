@@ -1,10 +1,11 @@
-import Position from '../Position/Position';
+import Position from './. ./Position/Position';
 import { Diagonal, GameOutcome, Side } from '../customTypes';
 import Piece from '../Pieces/Piece';
 import King from '../Pieces/King';
 import Move from '../Move/Move';
 import MoveHistory from '../MoveHistory/MoveHistory';
 import ChainMove from '../ChainMove/ChainMove';
+import IMove from "../interfaces/IMove";
 
 class Board {
   private movingSide: Side = Side.WHITE;
@@ -198,6 +199,16 @@ class Board {
 
   public finishMove() {
     this.movingSide = this.movingSide === Side.WHITE ? Side.BLACK : Side.WHITE;
+  }
+
+  public loadGame(moves :any) {
+    moves.forEach((move) => {
+      let moveObj : IMove;
+      if (move.moves) {
+        moveObj = new ChainMove(this, move.moves);
+      } else moveObj = new Move(this, move.from, move.to, move.capturedPiecePosition);
+      moveObj.execute();
+    });
   }
 }
 
